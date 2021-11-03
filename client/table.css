@@ -1,0 +1,19 @@
+table {
+	width: 50%;
+	border-collapse: collapse;
+}
+
+td {
+	/* word-wrap: break-word; */
+	padding: 5px;
+}
+
+th {
+	padding: 5px;
+}
+
+table,
+th,
+td {
+	border: 1px solid black;
+}
