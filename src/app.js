@@ -28,8 +28,14 @@ var server;
 var port = 5000;
 
 //Page listeners (our router)
+//go pull in our .js file that's in this directory
+var router = require("./router.js");
+router(app);
 
 //Service listeners (our data processes)
+var services = require("./services.js");
+services(app);
+
 
 //Listen
 server = app.listen(port, function(err) {
