@@ -1,6 +1,7 @@
 const fs = require('fs');
+const path = require('path');
 
-const FILENAME = './src/files/cards.txt';
+const FILENAME = path.join(__dirname + '/../src/files/cards.txt');
 //for some reason, the program doesn't run this services.js file which is evident due to the fact that the console log that I'm using doesn't output to the console
 
 var services = function(app) {
@@ -64,6 +65,7 @@ var services = function(app) {
 			if (err) {
 				res.send(JSON.stringify({ msg: err }));
 			} else {
+				//convert JSON string to object
 				deckData = JSON.parse(data);
 
 				res.send(JSON.stringify({ msg: 'SUCCESS', cardData: deckData }));
