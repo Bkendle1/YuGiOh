@@ -20,7 +20,9 @@ html {
 }
 
 nav {
-	background: #6b83c3;
+	background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/client/css/egyptianCards.png) no-repeat;
+	background-size: cover;
+	background-position-y: -140px;
 	height: 120px;
 	width: 100%;
 }

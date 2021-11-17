@@ -14,14 +14,19 @@ html {
 	-o-background-size: cover;
 	background-size: cover;
 }
+
 h1 {
 	text-align: center;
 }
+
 nav {
-	background: #6b83c3;
+	background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/client/css/egyptianCards.png) no-repeat;
+	background-size: cover;
+	background-position-y: -140px;
 	height: 120px;
 	width: 100%;
 }
+
 #logo {
 	width: 10%;
 	height: auto;
@@ -48,7 +53,7 @@ nav ul li a {
 	font-weight: bold;
 }
 
-a:hover {
+li a:hover {
 	background: #1b9bff;
 	transition: .4s;
 }
@@ -60,8 +65,8 @@ body {
 fieldset {
 	margin: 2em 0;
 	padding: 1em 2em;
-	border: solid 1px #8b6bc3;
-	background-color: rgba(139, 107, 194, 0.5);
+	border: solid 1px rgb(107, 128, 195);
+	background-color: rgba(107, 128, 195, 0.5);
 	border-radius: 6px;
 	min-width: 200px;
 }
@@ -69,7 +74,7 @@ fieldset {
 legend {
 	font-size: 1.25em;
 	padding: 0 .25em;
-	color: #8b6bc3;
+	color: rgb(107, 128, 195);
 }
 
 label {
@@ -80,6 +85,7 @@ label {
 
 label:first-of-type {
 	margin-top: 0;
+	font-size: 1.2em;
 }
 
 input {
