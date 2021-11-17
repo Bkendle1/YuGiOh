@@ -1,0 +1,77 @@
+* {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	list-style: none;
+	box-sizing: border-box;
+}
+
+body {
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+html {
+	background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+		url(/client/css/yugiohBG.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+nav {
+	background: #6b83c3;
+	height: 120px;
+	width: 100%;
+}
+
+#logo {
+	width: 10%;
+	height: auto;
+	margin: 10px;
+}
+
+nav ul {
+	float: right;
+	margin-right: 20px;
+}
+
+nav ul li {
+	display: inline-block;
+	line-height: 80px;
+	margin: 25px 5px;
+}
+
+nav ul li a {
+	color: white;
+	font-size: 17px;
+	padding: 7px 13px;
+	border-radius: 3px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+a:hover {
+	background: #1b9bff;
+	transition: .4s;
+}
+
+p {
+	background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(/client/css/yugiohTextBG.png) no-repeat;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	width: 50%;
+	margin: auto;
+	padding: 50px;
+	text-align: center;
+	font-size: 20px;
+	color: white;
+	box-shadow: 5px 5px 10px black;
+}
+
+div {
+	margin: 200px;
+	/* margin: 1em; */
+}

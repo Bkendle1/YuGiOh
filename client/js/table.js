@@ -1,15 +1,15 @@
 //receive record from services.js
-const deckURL = 'http://localhost:5000/read-records'
+// const deckURL = 'http://localhost:5000/read-records';
 
 createTable();
 
 function createTable() {
 	$.ajax({
-		url: deckURL,
+		url: 'http://localhost:5000/read-records',
 		type: 'get',
 		success: function(response) {
 			var returnData = JSON.parse(response);
-	
+
 			if (returnData.msg === 'SUCCESS') {
 				console.log('Data returned: ' + JSON.stringify(returnData.cardData));
 				displayTable(returnData.cardData);
@@ -22,7 +22,6 @@ function createTable() {
 		}
 	});
 }
-
 
 function displayTable(dataArr) {
 	console.log('Database Array: ' + dataArr);
@@ -37,9 +36,10 @@ function displayTable(dataArr) {
 		htmlString += '<td>' + dataArr[i].cardType + '</td>';
 		htmlString += '<td>' + dataArr[i].attribute + '</td>';
 		htmlString += '<td>' + dataArr[i].level + '</td>';
-		// htmlString += '<td>' + dataArr[i].id + '</td>';
+
 		//add delete button for each element
-		htmlString += "<td>" + "<button class='data-delete'" + "data_id='" + dataArr[i].id + "'>Graveyard" + "</button></td>";
+		htmlString +=
+			'<td>' + "<button class='data-delete' " + " data-id='" + dataArr[i].id + "'>Graveyard" + '</button></td>';
 		htmlString += '</tr>';
 	}
 	//you could use .html(htmlString) if you put the table headers in <thead>
@@ -52,28 +52,26 @@ function displayTable(dataArr) {
 
 //deletes rows (still need to implement app.delete in services.js)
 function enableDelete() {
-$('.data-delete').click(function() {
-	//when the delete button is clicked, it specifies that it's whatever delete button specifically you just clicked
-	var id = $(this).val();
+	$('.data-delete').click(function() {
+		//when the delete button is clicked, it specifies that it's whatever delete button specifically you just clicked
+		var recordID = this.getAttribute('data-id');
 
-	$.ajax({
-		url: deckURL + '/delete-records',
-		 type: 'delete',
-		 data: id,
-		success: function(response) {
-			var returnData = JSON.parse(response);
-	
-			if (returnData.msg === 'SUCCESS') {
-				createTable();
-			} else {
+		$.ajax({
+			url: 'http://localhost:5000/delete-records',
+			type: 'delete',
+			data: { id: recordID },
+			success: function(response) {
+				var returnData = JSON.parse(response);
+
+				if (returnData.msg === 'SUCCESS') {
+					createTable();
+				} else {
+					console.log(response);
+				}
+			},
+			error: function(response) {
 				console.log(response);
 			}
-		},
-		error: function(response) {
-			console.log(response);
-		}
+		});
 	});
-	
-})
 }
-

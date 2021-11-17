@@ -1,19 +1,114 @@
-table {
-	width: 50%;
-	border-collapse: collapse;
+* {
+	padding: 0;
+	margin: 0;
+	text-decoration: none;
+	list-style: none;
+	box-sizing: border-box;
 }
 
+body {
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+}
+
+html {
+	background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+		url(/client/css/yugiohBG.jpg) no-repeat center center fixed;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+}
+
+nav {
+	background: #6b83c3;
+	height: 120px;
+	width: 100%;
+}
+
+#logo {
+	width: 10%;
+	height: auto;
+	margin: 10px;
+}
+
+nav ul {
+	float: right;
+	margin-right: 20px;
+}
+
+nav ul li {
+	display: inline-block;
+	line-height: 80px;
+	margin: 25px 5px;
+}
+
+nav ul li a {
+	color: white;
+	font-size: 17px;
+	padding: 7px 13px;
+	border-radius: 3px;
+	text-transform: uppercase;
+	font-weight: bold;
+}
+
+a:hover {
+	background: #1b9bff;
+	transition: .4s;
+}
+
+/* table {
+	width: 50%;
+	border-collapse: collapse;
+	color: white;
+} */
+
+table {
+	position: absolute;
+	z-index: 2;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 60%;
+	/* height: 1em; */
+	border-collapse: collapse;
+	border-spacing: 0;
+	border-radius: 12px 12px 0 0;
+	overflow: hidden;
+	box-shadow: 0 2px 12px rgba(32, 32, 32, 0.3);
+}
+
+th,
 td {
-	/* word-wrap: break-word; */
-	padding: 5px;
+	padding: 12px 15px;
+}
+
+tr {
+	background-color: white;
 }
 
 th {
 	padding: 5px;
+	background: #ba68c8;
+	color: #fafafa;
+	text-transform: uppercase;
+	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 }
 
-table,
-th,
 td {
-	border: 1px solid black;
+	font-family: 'Open sans', sans-serif;
+}
+
+tr:nth-child(odd) {
+	background-color: #eee;
+}
+
+.data-delete {
+	font-size: 14px;
+	font-weight: bold;
+	background: black;
+	width: 100px;
+	padding: 5px;
+	text-transform: uppercase;
+	color: #fff;
+	border-radius: 5px;
 }

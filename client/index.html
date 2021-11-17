@@ -4,50 +4,49 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="index.css">
+    <link rel="stylesheet" href="/client/css/index.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
     <script src="/client/js/index.js" async></script>
     <title>Search</title>
 </head>
 <body>
-    <h1>Yu-Gi-Oh! Card Database</h1>
+
 
     <nav>
-        <a href="http://localhost:5000/table">Card Database</a>
+        <img id="logo" src="/client/css/yugiohDB.png" alt="Yu-Gi-Oh!">
+
+        <ul>
+            <li><a href="http://localhost:5000">Home</a></li>
+            <li><a href="http://localhost:5000/table">Database</a></li>
+        </ul>
     </nav>
-
+<section>
     <form id="card_form" action="localhost:5000/table">
-        <p>
-            <label for="name">Card Name:</label>
-            <input type="text" id="name" name="name">
-        </p>
-
-
-        <p>
-            <label for="description">Description:</label>
-            <input type="text" id="description" name="description">
-        </p>
-
-
-        <p>
-            <label for="type">Card Type:</label>
-            <input type="text" id="type" name="type">
-        </p>
-
-
-        <p>
-            <label for="attribute">Attribute:</label>
-            <input type="text" id="attribute" name="attribute">
-        </p>
-
-
-        <p>
-            <label for="level">Level/Rank:</label>
-            <input type="level" id="level" name="level">
-        </p>
-
-
-        <button id="data-submit">Submit</button>
+        <fieldset>
+            <legend>Submit Card</legend>
+            <p>
+                <label for="name">Card Name:</label>
+                <input type="text" name="name" id="name">
+            </p>
+            <p>
+                <label for="description">Description:</label>
+                <textarea  name="description" id="description" rows="4" cols="50"></textarea>
+            </p>
+            <p>
+                <label for="type">Card Type:</label>
+                <input type="text" name="type" id="type">
+            </p>
+            <p>
+                <label for="attribute">Attribute:</label>
+                <input type="text" name="attribute" id="attribute">
+            </p>
+            <p>
+                <label for="level">Level/Rank:</label>
+                <input type="level" name="level" id="level">
+            </p>
+            <div id="btn-align"><button id="data-submit">Submit</button></div>
+        </fieldset>
     </form>
+</section>
 </body>
 </html>
