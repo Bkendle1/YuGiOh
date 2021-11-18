@@ -64,8 +64,7 @@ table {
 	left: 50%;
 	top: 50%;
 	transform: translate(-50%, -50%);
-	width: 60%;
-	/* height: 1em; */
+	width: 70%;
 	border-collapse: collapse;
 	border-spacing: 0;
 	border-radius: 12px 12px 0 0;
