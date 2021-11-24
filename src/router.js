@@ -13,6 +13,10 @@ var router = function(app) {
 	// 	res.status(200).sendFile(path.join(__dirname + '/../client/index.html'));
 	// });
 
+	app.get('/view', function(req, res) {
+		res.status(200).sendFile(path.join(__dirname + '/../client/view-yugioh.html'));
+	});
+
 	app.get('/index', function(req, res) {
 		res.status(200).sendFile(path.join(__dirname + '/../client/index.html'));
 	});

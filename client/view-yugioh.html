@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+        <script src="../client/js/view-yugioh.js"></script>
+        <link rel="stylesheet" href="../client/css/view-yugioh.css">
+    </head>
+
+
+    <body data-ng-app="browseCardsApp" data-ng-controller="browsedCardsCtrl">
+
+        <nav>
+            <a href="http://localhost:5000"><img id="logo" src="/client/css/yugiohDB.png" alt="Yu-Gi-Oh!"></a>
+            <ul>
+                <li><a href="http://localhost:5000">Home</a></li>
+                <li><a href="http://localhost:5000/table">Database</a></li>
+                <li><a href="http://localhost:5000/index">Form</a></li>
+            </ul>
+        </nav>
+
+        <fieldset>
+
+                <p>
+                    <label for="name">Card Name: </label>
+                    <label id="name">{{obj.cardName}}</label>
+                </p>
+
+
+                <p>
+                    <label for="description">Description: </label>
+                    <label id="description">{{obj.description}}</label>
+                </p>
+
+
+                <p>
+                    <label for="type">Type: </label>
+                    <label id="type">{{obj.cardType}}</label>
+                </p>
+
+
+                <p>
+                    <label for="attribute">Attribute: </label>
+                    <label id="attribute">{{obj.attribute}}</label>
+                </p>
+
+            <p>
+
+                    <label for="level">Level/Rank: </label>
+                    <label id="level">{{obj.level}}</label>
+            </p>
+
+            <!-- buttons -->
+            <div id="btn-align">
+                <button class="draw"  data-ng-click="changeCard(-1)" data-ng-hide="hidePrev">&lt&lt&ltPrevious</button>
+                <button class="draw"data-ng-click="changeCard(1)" data-ng-hide="hideNext">Next&gt&gt&gt</button>
+            </div>
+        </fieldset>
+
+    </body>
+</html>
