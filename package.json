@@ -9,6 +9,7 @@
   "author": "Britt Li Kendle",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1"
+    "express": "^4.17.1",
+    "mongodb": "^4.2.1"
   }
 }

@@ -1,110 +1,125 @@
-const fs = require('fs');
-const path = require('path');
+// const fs = require('fs');
+// const path = require('path');
 
-const FILENAME = path.join(__dirname + '/../src/files/cards.txt');
-//for some reason, the program doesn't run this services.js file which is evident due to the fact that the console log that I'm using doesn't output to the console
+//include mongodb client
+const MongoClient = require('mongodb').MongoClient;
+
+//ObjectID
+const ObjectID = require('mongodb').ObejctId;
+
+//Define Database URL
+const dbURL = process.env.DB_URI || 'mongodb://localhost';
+
+// const FILENAME = path.join(__dirname + '/../src/files/cards.txt');
 
 var services = function(app) {
+	// MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
+	// 	if (err) {
+	// 		console.log(err);
+	// 	} else {
+	// 		//get database object
+	// 		var dbo = client.db('deck');
+
+	// 		//create the collection
+	// 		dbo.createCollection('cards', function(err, client) {
+	// 			if (err) {
+	// 				console.log(err);
+	// 			} else {
+	// 				console.log('Collection created!');
+	// 			}
+	// 		});
+	// 	}
+	// });
+
 	//create a record
 	app.post('/write-record', function(req, res) {
 		//create a key
 		var id = 'card' + Date.now();
-		//capture client-sent data
-		var cardData = {
-			//client and server side variables are the same for readability
-			id: id,
-			cardName: req.body.cardName,
-			description: req.body.description,
-			cardType: req.body.cardType,
-			attribute: req.body.attribute,
-			level: req.body.level
-		};
 
-		console.log('Data: ' + JSON.stringify(cardData));
-		console.log('in services');
+		var id = id;
+		var cardName = req.body.cardName;
+		var description = req.body.description;
+		var cardType = req.body.cardType;
+		var attribute = req.body.attribute;
+		var level = req.body.level;
 
-		var deckData = [];
-
-		if (fs.existsSync(FILENAME)) {
-			//Read in current database
-			//.readFile is async
-			fs.readFile(FILENAME, 'utf8', function(err, data) {
-				if (err) {
-					res.send(JSON.stringify({ msg: err }));
-				} else {
-					deckData = JSON.parse(data);
-
-					deckData.push(cardData);
-
-					fs.writeFile(FILENAME, JSON.stringify(deckData), function(err) {
-						if (err) {
-							res.send(JSON.stringify({ msg: err }));
+		//connect to database
+		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
+			if (err) {
+				res.send(JSON.stringify({ msg: err }));
+			} else {
+				var dbo = client.db('deck');
+				//create JSON
+				var newCard = {
+					id: id,
+					cardName: cardName,
+					description: description,
+					cardType: cardType,
+					attribute: attribute,
+					level: level
+				};
+				var search = { cardName: cardName };
+				dbo.collection('cards').find(search).toArray(function(err, data) {
+					if (err) {
+						res.send(JSON.stringify({ msg: err }));
+					} else {
+						if (data.length > 0) {
+							res.send(JSON.stringify({ msg: 'Card Already Exists' }));
 						} else {
-							res.send(JSON.stringify({ msg: 'SUCCESS' }));
+							dbo.collection('cards').insertOne(newCard, function(err) {
+								if (err) {
+									res.send(JSON.stringify({ msg: err }));
+								} else {
+									res.send(JSON.stringify({ msg: 'SUCCESS' }));
+									client.close();
+								}
+							}); //end of collection
 						}
-					});
-				}
-			});
-		} else {
-			//this basically runs once, when the file doesn't exist in the first place
-			deckData.push(cardData);
-
-			fs.writeFile(FILENAME, JSON.stringify(deckData), function(err) {
-				if (err) {
-					res.send(JSON.stringify({ msg: err }));
-				} else {
-					res.send(JSON.stringify({ msg: 'SUCCESS' }));
-				}
-			});
-		}
+					}
+				});
+			}
+		}); //end of MongoClient
 	}); //end of write-record
 
 	//read records
 	app.get('/read-records', function(req, res) {
-		fs.readFile(FILENAME, 'utf8', function(err, data) {
+		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
 			if (err) {
 				res.send(JSON.stringify({ msg: err }));
 			} else {
-				//convert JSON string to object
-				deckData = JSON.parse(data);
+				var dbo = client.db('deck');
+				dbo.collection('cards').find().toArray(function(err, data) {
+					if (err) {
+						//what to do if can't connect
+						res.send(JSON.stringify({ msg: err }));
+					} else {
+						res.send(JSON.stringify({ msg: 'SUCCESS', cardData: data }));
 
-				res.send(JSON.stringify({ msg: 'SUCCESS', cardData: deckData }));
+						client.close();
+					}
+				}); //end of collection
 			}
-		});
+		}); //end of MongoClient
 	}); //end of read-records
 
 	app.delete('/delete-records', function(req, res) {
-		fs.readFile(FILENAME, 'utf8', function(err, data) {
+		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
 			if (err) {
 				res.send(JSON.stringify({ msg: err }));
 			} else {
-				deckData = JSON.parse(data);
-
-				console.log(JSON.stringify(req.body));
-				var id = req.body.id;
-				for (var i = 0; i < deckData.length; i++) {
-					if (deckData[i].id == id) {
-						console.log('We have a match');
-						deckData.splice(id, 1);
-					} else {
-						console.log('Not a match');
-					}
-					//console.log(deckData[i].id);
-				}
-
-				// if (res.body.id == deckData[i].id) {
-				// }
-
-				fs.writeFile(FILENAME, JSON.stringify(deckData), function(err) {
+				var dbo = client.db('deck');
+				var search = { id: req.body.id };
+				dbo.collection('cards').deleteOne(search, function(err) {
 					if (err) {
 						res.send(JSON.stringify({ msg: err }));
 					} else {
 						res.send(JSON.stringify({ msg: 'SUCCESS' }));
+						client.close();
 					}
 				});
 			}
-		});
+		}); //end of MongoClient
 	}); //end of delete-records
-};
+}; //end of services
 
 module.exports = services;
