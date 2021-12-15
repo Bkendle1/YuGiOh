@@ -68,6 +68,7 @@ app.controller('cardsTableCtrl', function($scope, $http) {
 
 	$scope.get_records();
 
+	// CANT UPDATE CARD NAME OR CARD TYPE
 	$scope.editCard = function(cardNum) {
 		$scope.name = $scope.deck[cardNum].cardName;
 		$scope.description = $scope.deck[cardNum].description;
