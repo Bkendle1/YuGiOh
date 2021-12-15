@@ -1,6 +1,7 @@
 //receive record from services.js
 // const deckURL = 'http://localhost:5000/read-records';
 
+
 createTable();
 
 function createTable() {

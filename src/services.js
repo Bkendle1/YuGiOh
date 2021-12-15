@@ -5,7 +5,7 @@
 const MongoClient = require('mongodb').MongoClient;
 
 //ObjectID
-const ObjectID = require('mongodb').ObejctId;
+const ObjectId = require('mongodb').ObjectId;
 
 //Define Database URL
 const dbURL = process.env.DB_URI || 'mongodb://localhost';
@@ -61,17 +61,18 @@ var services = function(app) {
 				var search = { cardName: cardName };
 				dbo.collection('cards').find(search).toArray(function(err, data) {
 					if (err) {
-						res.send(JSON.stringify({ msg: err }));
+						return res.send(JSON.stringify({ msg: err }));
 					} else {
 						if (data.length > 0) {
-							res.send(JSON.stringify({ msg: 'Card Already Exists' }));
+							return res.send(JSON.stringify({ msg: 'Card Already Exists' }));
 						} else {
 							dbo.collection('cards').insertOne(newCard, function(err) {
 								if (err) {
-									res.send(JSON.stringify({ msg: err }));
-								} else {
-									res.send(JSON.stringify({ msg: 'SUCCESS' }));
 									client.close();
+									return res.send(JSON.stringify({ msg: 'Error: ' + err }));
+								} else {
+									client.close();
+									return res.send(JSON.stringify({ msg: 'SUCCESS' }));
 								}
 							}); //end of collection
 						}
@@ -85,30 +86,101 @@ var services = function(app) {
 	app.get('/read-records', function(req, res) {
 		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
 			if (err) {
-				res.send(JSON.stringify({ msg: err }));
+				return res.send(JSON.stringify({ msg: 'Error: ' + err }));
 			} else {
 				var dbo = client.db('deck');
 				dbo.collection('cards').find().toArray(function(err, data) {
 					if (err) {
 						//what to do if can't connect
-						res.send(JSON.stringify({ msg: err }));
-					} else {
-						res.send(JSON.stringify({ msg: 'SUCCESS', cardData: data }));
-
 						client.close();
+						return res.send(JSON.stringify({ msg: 'Error: ' + err }));
+					} else {
+						client.close();
+						return res.send(JSON.stringify({ msg: 'SUCCESS', cardData: data }));
 					}
 				}); //end of collection
 			}
 		}); //end of MongoClient
 	}); //end of read-records
 
+	app.get('/get-cardsByType', function(req, res) {
+		//card type
+		var type = req.query.type;
+
+		var search = type === '' ? {} : { type: req.query.type };
+
+		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
+			if (err) {
+				return res.status(200).send(JSON.stringify({ msg: 'Error: ' + err }));
+			} else {
+				var dbo = client.db('deck');
+				dbo.collection('cards').find(search).toArray(function(err, data) {
+					if (err) {
+						client.close();
+						return res.status(200).send(JSON.stringify({ msg: 'Error: ' + err }));
+					} else {
+						client.close();
+						return res.status(200).send(JSON.stringify({ msg: 'SUCCESS', deck: data }));
+					}
+				});
+			}
+		}); //end of MongoClient
+	}); //end of get-cardsByType
+
+	app.put('/update-card', function(req, res) {
+		var cardID = req.body.cardID;
+		var name = req.body.name;
+		var description = req.body.description;
+		var type = req.body.type;
+		var attribute = req.body.attribute;
+		var level = req.body.level;
+
+		// convert cardID into a variable Mongo can understand
+		var c_id = new ObjectId(cardID);
+
+		var search = { _id: c_id };
+		var updateData = {
+			$set: {
+				name: name,
+				description: description,
+				type: type,
+				attribute: attribute,
+				level: level
+			}
+		};
+
+		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
+			if (err) {
+				return res.status(200).send(JSON.stringify({ msg: 'Error: ' + err }));
+			} else {
+				var dbo = client.db('deck');
+
+				dbo.collection('cards').updateOne(search, updateData, function(err) {
+					if (err) {
+						client.close();
+						return res.status(200).send(JSON.stringify({ msg: 'Error: ' + err }));
+					} else {
+						client.close();
+						return res.status(200).send(JSON.stringify({ msg: 'SUCCESS' }));
+					}
+				});
+			}
+		}); //end of MongoClient
+	}); //end of update-card
+
 	app.delete('/delete-records', function(req, res) {
+		var cardID = req.query.id;
+		var search = cardID;
+
+		//convert cardID for Mongo
+		var c_id = new ObjectId(cardID);
+		search = { _id: c_id };
+
 		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
 			if (err) {
 				res.send(JSON.stringify({ msg: err }));
 			} else {
 				var dbo = client.db('deck');
-				var search = { id: req.body.id };
 				dbo.collection('cards').deleteOne(search, function(err) {
 					if (err) {
 						res.send(JSON.stringify({ msg: err }));

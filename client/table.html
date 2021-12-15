@@ -5,17 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/client/css/table.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="/client/js/table.js" async></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.min.js"></script>
+
+    <script src="/client/js/cardsTable.js" async></script>
     <title>Table</title>
 </head>
-<body>
+<body data-ng-app="cardsTableApp" data-ng-controller="cardsTableCtrl" data-ng-init="hideForm=true">
 
     <nav>
-
-            <a href="http://localhost:5000"><img id="logo" src="/client/css/yugiohDB.png" alt="Yu-Gi-Oh!"></a>
-
-
+         <a href="http://localhost:5000"><img id="logo" src="/client/css/yugiohDB.png" alt="Yu-Gi-Oh!"></a>
 
         <ul>
             <li><a href="http://localhost:5000">Home</a></li>
@@ -24,22 +22,88 @@
         </ul>
     </nav>
 
-    <!-- Create table -->
-    <table>
-        <thead>
-            <th>Name</th>
-            <th>Description</th>
-            <th>Type</th>
-            <th>Attribute</th>
-            <th>Level/Rank</th>
-            <th>Delete</th>
-        </thead>
-        <tbody id="card-table">
+    <section data-ng-hide="hideTable">
+        <div>
+            <label for="groupBy">Card Type</label>
+            <select id="groupBy"
+            data-ng-model="selectedType"
+            data-ng-options="type.display for type in types" data-ng-change="redrawTable()"></select>
+        </div>
+        <!-- Create table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Type</th>
+                    <th>Attribute</th>
+                    <th>Level/Rank</th>
+                    <th>Delete</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody id="card-table">
+                <tr data-ng-repeat="obj in deck">
+                    <td>{{obj.cardName}}</td>
+                    <td>{{obj.description}}</td>
+                    <td>{{obj.cardType}}</td>
+                    <td>{{obj.attribute}}</td>
+                    <td>{{obj.level}}</td>
 
-        </tbody>
+                    <td>
+                        <button data-ng-click="deleteCard(obj['_id'])">Delete</button>
+                    </td>
+                    <td>
+                        <button data-ng-click="editCard($index)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </section>
 
+    <!-- edit card form -->
+     <!-- building the form used to update our data -->
+     <section data-ng-hide="hideForm">
+        <!-- hold some data and hide it from the user -->
+        <label data-ng-model="cardID" hidden></label>
 
-    </table>
+        <div>
+            <label for="name">Card Name: </label>
+            <input type="text" id="name" data-ng-model="name" data-ng-change=startNew()>
+        </div>
 
+        <div>
+            <label for="description">Description: </label>
+            <input type="text" id="description" data-ng-model="description" data-ng-change=startNew()>
+        </div>
+
+        <div>
+            <label for="type">Type: </label>
+            <input type="text" id="type" data-ng-model="type" data-ng-change=startNew()>
+        </div>
+
+        <div>
+            <label for="attribute">Attribute: </label>
+            <input type="text" id="attribute" data-ng-model="attribute" data-ng-change=startNew()>
+        </div>
+
+        <div>
+            <label for="level">Level: </label>
+            <input type="text" id="level" data-ng-model="level" data-ng-change=startNew()>
+        </div>
+
+        <div>
+            <button id="submit" data-ng-click="updateCard()">Update</button>
+        </div>
+
+        <div>
+            <button id="cancelButton" data-ng-click="cancelEdit()">Cancel</button>
+        </div>
+
+        <div style="margin-top: 20px; font-size: 34px; color: green;">
+            {{addResults}}
+        </div>
+
+    </section>
 </body>
 </html>
