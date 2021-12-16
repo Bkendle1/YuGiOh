@@ -13,10 +13,10 @@ app.controller('cardsTableCtrl', function($scope, $http) {
 		}).then(
 			function(response) {
 				if (response.data.msg === 'SUCCESS') {
+					console.log(response.data.cardData);
 					$scope.deck = response.data.cardData;
 					$scope.types = getTypes(response.data.cardData);
 					$scope.selectedType = $scope.types[0];
-					console.log(response.data.cardData);
 				}
 			},
 			function(response) {
@@ -32,11 +32,11 @@ app.controller('cardsTableCtrl', function($scope, $http) {
 		$http({
 			method: 'get',
 			url: 'http://localhost:5000/get-cardsByType',
-			params: { type: type }
+			params: { cardType: type }
 		}).then(
 			function(response) {
 				if (response.data.msg === 'SUCCESS') {
-					$scope.deck = response.data.cardData;
+					$scope.deck = response.data.deck;
 				} else {
 					console.log(response);
 				}
@@ -68,7 +68,6 @@ app.controller('cardsTableCtrl', function($scope, $http) {
 
 	$scope.get_records();
 
-	// CANT UPDATE CARD NAME OR CARD TYPE
 	$scope.editCard = function(cardNum) {
 		$scope.name = $scope.deck[cardNum].cardName;
 		$scope.description = $scope.deck[cardNum].description;
@@ -76,7 +75,7 @@ app.controller('cardsTableCtrl', function($scope, $http) {
 		$scope.attribute = $scope.deck[cardNum].attribute;
 		$scope.level = $scope.deck[cardNum].level;
 		$scope.cardID = $scope.deck[cardNum]['_id'];
-		console.log($scope.deck[0].cardName);
+
 		$scope.hideTable = true;
 		$scope.hideForm = false;
 	};
@@ -98,14 +97,15 @@ app.controller('cardsTableCtrl', function($scope, $http) {
 			url: 'http://localhost:5000/update-card',
 			data: {
 				cardID: $scope.cardID,
-				name: $scope.name,
+				cardName: $scope.name,
 				description: $scope.description,
-				type: $scope.type,
+				cardType: $scope.type.toLowerCase(),
 				attribute: $scope.attribute,
 				level: $scope.level
 			}
 		}).then(
 			function(response) {
+				
 				if (response.data.msg === 'SUCCESS') {
 					$scope.hideTable = false;
 					$scope.hideForm = true;

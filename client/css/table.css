@@ -59,22 +59,17 @@ li a:hover {
 }
 
 table {
-	position: absolute;
-	z-index: 2;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
 	width: 70%;
-	border-collapse: collapse;
-	border-spacing: 0;
-	border-radius: 12px 12px 0 0;
-	overflow: hidden;
-	box-shadow: 0 2px 12px rgba(32, 32, 32, 0.3);
+	margin-left: auto;
+	margin-right: auto;
+	/* BORDER-RADIUS NOT WORKING */
+	border-radius: 6px;
 }
 
 th,
 td {
 	padding: 12px 15px;
+	
 }
 
 tr {
@@ -87,6 +82,7 @@ th {
 	color: #fafafa;
 	text-transform: uppercase;
 	font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+	
 }
 
 td {

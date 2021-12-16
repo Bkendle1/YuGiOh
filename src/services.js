@@ -13,23 +13,6 @@ const dbURL = process.env.DB_URI || 'mongodb://localhost';
 // const FILENAME = path.join(__dirname + '/../src/files/cards.txt');
 
 var services = function(app) {
-	// MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
-	// 	if (err) {
-	// 		console.log(err);
-	// 	} else {
-	// 		//get database object
-	// 		var dbo = client.db('deck');
-
-	// 		//create the collection
-	// 		dbo.createCollection('cards', function(err, client) {
-	// 			if (err) {
-	// 				console.log(err);
-	// 			} else {
-	// 				console.log('Collection created!');
-	// 			}
-	// 		});
-	// 	}
-	// });
 
 	//create a record
 	app.post('/write-record', function(req, res) {
@@ -54,7 +37,7 @@ var services = function(app) {
 					id: id,
 					cardName: cardName,
 					description: description,
-					cardType: cardType,
+					cardType: cardType.toLowerCase(),
 					attribute: attribute,
 					level: level
 				};
@@ -105,10 +88,9 @@ var services = function(app) {
 
 	app.get('/get-cardsByType', function(req, res) {
 		//card type
-		var type = req.query.type;
+		var cardType = req.query.cardType;
 
-		var search = type === '' ? {} : { type: req.query.type };
-
+		var search = cardType === '' ? {} : { cardType: req.query.cardType };
 		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
 			if (err) {
 				return res.status(200).send(JSON.stringify({ msg: 'Error: ' + err }));
@@ -129,9 +111,9 @@ var services = function(app) {
 
 	app.put('/update-card', function(req, res) {
 		var cardID = req.body.cardID;
-		var name = req.body.name;
+		var cardName = req.body.cardName;
 		var description = req.body.description;
-		var type = req.body.type;
+		var cardType = req.body.cardType;
 		var attribute = req.body.attribute;
 		var level = req.body.level;
 
@@ -141,14 +123,13 @@ var services = function(app) {
 		var search = { _id: c_id };
 		var updateData = {
 			$set: {
-				name: name,
+				cardName: cardName,
 				description: description,
-				type: type,
+				cardType: cardType,
 				attribute: attribute,
 				level: level
 			}
 		};
-
 		MongoClient.connect(dbURL, { useUnifiedTopology: true }, function(err, client) {
 			if (err) {
 				return res.status(200).send(JSON.stringify({ msg: 'Error: ' + err }));
