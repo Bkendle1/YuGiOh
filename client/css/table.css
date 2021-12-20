@@ -20,7 +20,7 @@ html {
 }
 
 nav {
-	background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)), url(/client/css/egyptianCards.png) no-repeat;
+	background: linear-gradient(rgba(0, 0, 0, 0.61), rgba(0, 0, 0, 0.6)), url(/client/css/egyptianCards.png) no-repeat;
 	background-size: cover;
 	background-position-y: 30%;
 	height: 120px;
