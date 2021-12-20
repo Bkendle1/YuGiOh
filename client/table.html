@@ -22,8 +22,8 @@
     </nav>
 
     <section data-ng-hide="hideTable">
-        <div>
-            <label for="groupBy">Card Type</label>
+        <div id="dropDown">
+            <label for="groupBy">Card Type: </label>
             <select id="groupBy"
             data-ng-model="selectedType"
             data-ng-options="type.display for type in types" data-ng-change="redrawTable()"></select>
@@ -50,10 +50,10 @@
                     <td>{{obj.level}}</td>
 
                     <td>
-                        <button data-ng-click="deleteCard(obj['_id'])">Delete</button>
+                        <button class="btn" data-ng-click="deleteCard(obj['_id'])">Graveyard</button>
                     </td>
                     <td>
-                        <button data-ng-click="editCard($index)">Edit</button>
+                        <button class="btn" data-ng-click="editCard($index)">Edit</button>
                     </td>
                 </tr>
             </tbody>
@@ -62,7 +62,7 @@
 
     <!-- edit card form -->
      <!-- building the form used to update our data -->
-     <section data-ng-hide="hideForm">
+     <section class="form" data-ng-hide="hideForm">
         <!-- hold some data and hide it from the user -->
         <label data-ng-model="cardID" hidden></label>
 
@@ -71,10 +71,10 @@
             <input type="text" id="name" data-ng-model="name" data-ng-change=startNew()>
         </div>
 
-        <div>
+        <div class="textArea">
             <label for="description">Description: </label>
-            <input type="text" id="description" data-ng-model="description" data-ng-change=startNew()>
-        </div>
+            <textarea type="text" id="description" data-ng-model="description" data-ng-change=startNew() rows="8" cols="50"></textarea>
+        </p>
 
         <div>
             <label for="type">Type: </label>
@@ -91,12 +91,13 @@
             <input type="text" id="level" data-ng-model="level" data-ng-change=startNew()>
         </div>
 
-        <div>
-            <button id="submit" data-ng-click="updateCard()">Update</button>
-        </div>
-
-        <div>
-            <button id="cancelButton" data-ng-click="cancelEdit()">Cancel</button>
+        <div id="btn-align">
+            <div class="buttons">
+                <button class="btn" id="submit" data-ng-click="updateCard()">Update</button>
+            </div>
+            <div class="buttons">
+                <button class="btn" id="cancelButton" data-ng-click="cancelEdit()">Cancel</button>
+            </div>
         </div>
 
         <div style="margin-top: 20px; font-size: 34px; color: green;">
@@ -104,5 +105,6 @@
         </div>
 
     </section>
+
 </body>
 </html>
